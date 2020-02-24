@@ -43,6 +43,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^6.1.2",
     "node-sass": "^4.13.1",
+    "resize-observer-polyfill": "^1.5.1",
     "sass-loader": "^8.0.2",
     "typescript": "^3.7.5",
     "vue-template-compiler": "^2.6.11"

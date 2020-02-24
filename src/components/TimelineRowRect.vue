@@ -7,8 +7,12 @@
     stroke="none"
     stroke-width="0"
     fill="rgb(66, 133, 244, .8)"
-    @click="onClick"
+    v-on="on"
   />
+  <!--
+    @mouseenter="$parent.$parent.showTooltip"
+    @mouseleave="$parent.$parent.hideTooltip"
+  -->
 </template>
 
 <script lang="ts">
@@ -38,8 +42,16 @@ export default class TimelineRowRect extends Vue {
     g?.appendChild(this.$el);
   }
 
-  private onClick() {
-    alert("hehe");
+  private destroyed() {
+    const g = this.$parent.$parent.$el.querySelector(`g[type="elements"]`);
+    g?.removeChild(this.$el);
+  }
+
+  private get on() {
+    return {
+      ...this.$listeners,
+      ...(this.$parent as any).$parent.timelineRowRectListeners
+    };
   }
 }
 </script>

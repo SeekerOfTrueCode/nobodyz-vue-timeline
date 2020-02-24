@@ -2,8 +2,8 @@
   <g>
     <!-- Background -->
     <rect
-      :x="this.padding.left"
-      :y="y + this.padding.top"
+      :x="padding.left"
+      :y="y + padding.top"
       :width="width"
       :height="height"
       stroke="none"
@@ -29,12 +29,7 @@
         fill="none"
       />
     </template>
-    <foreignObject
-      :x="this.padding.left"
-      :y="this.padding.top + y"
-      :width="width / ticks"
-      height="50"
-    >
+    <foreignObject :x="padding.left" :y="padding.top + y" :width="widthPerTick" :height="height">
       <div>
         <span>{{ name }}</span>
       </div>
@@ -48,6 +43,19 @@ import { Component, Prop, Vue, InjectReactive } from "vue-property-decorator";
 import { Time } from "./Types";
 import Timeline from "./Timeline.vue";
 
+/**
+ * Returns a number whose value is limited to the given range.
+ *
+ *
+ * @param {Number} min The lower boundary of the output range
+ * @param {Number} max The upper boundary of the output range
+ * @returns A number in the range [min, max]
+ * @type Number
+ */
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
+
 @Component
 export default class TimelineRow extends Vue {
   @Prop({ default: "DefaultName", type: String })
@@ -56,29 +64,68 @@ export default class TimelineRow extends Vue {
   @InjectReactive("padding")
   private padding!: any;
 
+  @InjectReactive("itemPadding")
+  private itemPadding!: any;
+
   // private x: number = 0;
-  private y: number = 0;
+  private get y(): number {
+    return this.height * this.rowIndex;
+  }
+
+  private rowIndex: number = 0;
 
   private mounted() {
-    if (this.$parent.$slots.default != null) {
-      const index = this.$parent.$slots.default.indexOf(this.$vnode);
-      // this.x = 0;
-      this.y = this.height * index;
-    }
+    this.updateIndex();
+  }
+
+  private updated() {
+    this.updateIndex();
+  }
+
+  private updateIndex(): void {
+    this.rowIndex = this.$parent.$slots.default?.indexOf(this.$vnode) ?? 0;
   }
 
   public calcChildPosition(start: Time, end: Time) {
-    return {
-      x:
-        this.padding.left +
-        ((start.hours - this.rowStart.hours + 1) * this.widthPerTick +
-          ((start.minutes - this.rowStart.minutes) / 60) * this.widthPerTick),
-      y: this.padding.top + this.y + this.height / 4,
-      width:
-        (end.hours - start.hours) * this.widthPerTick +
-        ((end.minutes - start.minutes) / 60) * this.widthPerTick,
-      height: this.height / 2
+    const startOfTheX = this.padding.left + this.itemPadding.left;
+    const endOfTheX = this.itemPadding.left + this.itemPadding.right;
+
+    const startOfTheY = this.padding.top + this.itemPadding.top + this.y;
+    const endOfTheY = this.itemPadding.top + this.itemPadding.bottom;
+
+    // don't allow element to go outisde of the timeline time borders
+    if (this.rowStart.hours > start.hours) {
+      start.hours = this.rowStart.hours;
+      start.minutes = this.rowStart.minutes;
+    }
+    // if (this.rowEnd.hours < end.hours) {
+    //   end.hours = this.rowEnd.hours;
+    //   end.minutes = this.rowEnd.minutes;
+    // }
+
+    const startTick =
+      (start.hours -
+        this.rowStart.hours +
+        (start.minutes - this.rowStart.minutes) / 60) /
+      this.hoursPerTick;
+    const endTick =
+      (end.hours - start.hours + (end.minutes - start.minutes) / 60) /
+      this.hoursPerTick;
+    const maxWidth = (this.ticks - startTick - 1) * this.widthPerTick - endOfTheX;
+    const newPos = {
+      x: startOfTheX + (startTick + 1) * this.widthPerTick,
+      y: startOfTheY,
+      width: clamp(endTick * this.widthPerTick - endOfTheX, 0, maxWidth),
+      height: this.height - endOfTheY
     };
+
+    // // dont't allow width to go outside of the timeline
+    // newPos.width = clamp(
+    //   newPos.width,
+    //   0,
+    //   this.padding.left - this.itemPadding.left + this.width - newPos.x
+    // );
+    return newPos;
   }
 
   private verticalPath(x: number, y: number, height: number): string {
@@ -92,7 +139,7 @@ export default class TimelineRow extends Vue {
   }
 
   private get width(): number {
-    return (this.$parent as Timeline).width;
+    return (this.$parent as any).width;
   }
 
   // private get padding(): any {
@@ -102,6 +149,10 @@ export default class TimelineRow extends Vue {
   private get ticks(): number {
     const ticks = (this.$parent as Timeline).ticks;
     return ticks != null ? ticks : 1;
+  }
+
+  private get hoursPerTick(): number {
+    return (this.$parent as Timeline).hoursPerTick;
   }
 
   private get widthPerTick(): number {
