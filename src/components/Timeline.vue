@@ -25,24 +25,20 @@
             :x="padding.left + widthPerTick - timeStamps.size.width/2"
             :y="padding.top + height"
             class="small"
-          >
-            {{time[0].toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false })}}
-          </text>
+          >{{time[0].toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false })}}</text>
           <template v-for="(date,i) in time.slice(1)">
             <text
               :key="`hours-${date}`"
               :x="padding.left + widthPerTick + (widthPerTick * (i + 1)) - timeStamps.size.width/2"
               :y="padding.top + height"
               class="small"
-            >
-              {{date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false })}}
-            </text>
+            >{{date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false })}}</text>
           </template>
         </g>
       </g>
     </svg>
     <timeline-tooltip>
-      <slot name="tooltip"/>
+      <slot name="tooltip" />
     </timeline-tooltip>
   </div>
 </template>
@@ -68,15 +64,33 @@ interface Props {
 }
 
 export type Padding = {
-  top: number,
-  right: number,
-  bottom: number,
-  left: number
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
 };
 
 interface Svg {
   width: number;
   height: number;
+}
+
+function adjustPadding(value: string | number, relativeLength: number): number {
+  if (value != null && value !== "" && !isNaN(Number(value.toString()))) {
+    // is number
+    return value as number;
+  } else if (typeof value === "string" || (value as any) instanceof String) {
+    const [char, char2] = (value as string).substring(
+      (value as string).length - 2
+    );
+    if (char2 === "%") {
+      return (+(value as string).slice(0, -1) / 100) * relativeLength;
+    }
+    if (char2 === "x" && char === "p") {
+      return +(value as string).slice(0, -2);
+    }
+  }
+  return 0;
 }
 
 @Component({
@@ -100,13 +114,27 @@ export default class Timeline extends Vue implements Props {
   @Prop({ default: true, required: false })
   public showTimestapms!: boolean;
 
+  @Prop({ default: 0, type: [Number, String] })
+  public paddingLeft!: string | number;
+
+  @Prop({ default: 0, type: [Number, String] })
+  public paddingRight!: string | number;
+
+  @Prop({ default: 0, type: [Number, String] })
+  public paddingTop!: string | number;
+
+  @Prop({ default: 0, type: [Number, String] })
+  public paddingBottom!: string | number;
+
   @ProvideReactive("padding")
-  public padding: Padding = {
-    top: 50,
-    right: 50,
-    bottom: 50,
-    left: 50
-  };
+  public get padding(): Padding {
+    return {
+      top: adjustPadding(this.paddingTop, this.height),
+      right: adjustPadding(this.paddingRight, this.width),
+      bottom: adjustPadding(this.paddingBottom, this.height),
+      left: adjustPadding(this.paddingLeft, this.width)
+    };
+  }
 
   // TODO: add handling the procentege as text
   @ProvideReactive("itemPadding")
@@ -124,35 +152,21 @@ export default class Timeline extends Vue implements Props {
     }
   };
 
-  private timelineRowRectListeners = {
-
+  private svg: Svg = {
+    width: 0,
+    height: 0
   };
+
+  private timelineRowRectListeners = {};
 
   public width: number = 0;
   public height: number = 0;
   private rowCount: number = 0;
 
-  private created() {
-    console.log("created");
-    this.$nextTick().then(() => {
-      // padding update (needs to listen to style changes)
-      // const getPadding = (value: string) => parseInt(window.getComputedStyle(this.$el, null).getPropertyValue(value).slice(0, 3));
-      const paddings = window.getComputedStyle(this.$el, null).getPropertyValue("padding").split("px").map(x => parseInt(x.trim()));
-      paddings.pop();
-      if (paddings.some(x => x)) {
-        this.padding = {
-          top: paddings[0],
-          right: paddings[1],
-          bottom: paddings[2],
-          left: paddings[3]
-        };
-        console.log("clear style");
-        (this.$el as HTMLElement).style.padding = "";
-      }
-    });
-  }
-
-  private observeUpdateRowCount(mutationsList?: MutationRecord[], observer?: MutationObserver): void {
+  private observeUpdateRowCount(
+    mutationsList?: MutationRecord[],
+    observer?: MutationObserver
+  ): void {
     this.rowCount = (this.$slots.default?.length ?? -1) + 1;
   }
 
@@ -161,6 +175,12 @@ export default class Timeline extends Vue implements Props {
       width,
       height
     };
+  }
+
+  @Watch("padding")
+  private onPaddingChange(padding: Padding) {
+    this.updateSize(this.$el.clientWidth, this.$el.clientHeight);
+    this.updateSvgSize();
   }
 
   private updateSize(width: number, height: number): void {
@@ -181,7 +201,25 @@ export default class Timeline extends Vue implements Props {
     }
   }
 
-  private observeUpdateSize(entries?: ResizeObserverEntry[], observer?: ResizeObserver): void {
+  private updateSvgSize() {
+    this.svg = {
+      width:
+        this.width +
+        this.padding.left +
+        this.padding.right +
+        this.timeStamps.size.width / 2,
+      height:
+        this.height +
+        this.padding.top +
+        this.padding.bottom +
+        this.timeStamps.size.height
+    };
+  }
+
+  private observeUpdateSize(
+    entries?: ResizeObserverEntry[],
+    observer?: ResizeObserver
+  ): void {
     if (entries && observer) {
       entries.forEach(({ contentRect: { width, height } }) => {
         this.updateSize(width, height);
@@ -189,27 +227,39 @@ export default class Timeline extends Vue implements Props {
     } else {
       this.updateSize(this.$el.clientWidth, this.$el.clientHeight);
     }
+    this.updateSvgSize();
   }
 
-  private observeUpdateTimestampsSize(entries?: ResizeObserverEntry[], observer?: ResizeObserver) {
+  private observeUpdateTimestampsSize(
+    entries?: ResizeObserverEntry[],
+    observer?: ResizeObserver
+  ) {
     if (entries && observer) {
       entries.forEach(({ contentRect: { width, height } }) => {
         this.updateTimeStampSize(width, height);
+        this.updateSize(this.$el.clientWidth, this.$el.clientHeight);
       });
     } else {
-      const timestamps = this.$el.querySelector(
-        `g[type="timestamps"] text`
-      );
+      const timestamps = this.$el.querySelector(`g[type="timestamps"] text`);
       const { width, height } = timestamps!.getBoundingClientRect();
       this.updateTimeStampSize(width, height);
+      this.updateSize(this.$el.clientWidth, this.$el.clientHeight);
     }
+    this.updateSvgSize();
   }
 
   @Watch("showTimestapms")
-  private onTimeStampChange(): void {
-    this.$nextTick(() =>
-      this.updateSize(this.$el.clientWidth, this.$el.clientHeight)
-    );
+  private onTimeStampChange(value: boolean): void {
+    if (value) {
+      const timestamps = this.$el.querySelector(`g[type="timestamps"] text`);
+      const rect = timestamps?.getBoundingClientRect();
+      this.updateTimeStampSize(rect?.width ?? 0, rect?.height ?? 0);
+    } else {
+      this.updateTimeStampSize(0, 0);
+    }
+
+    this.updateSize(this.$el.clientWidth, this.$el.clientHeight);
+    this.updateSvgSize();
   }
 
   private get time(): Date[] {
@@ -267,22 +317,6 @@ export default class Timeline extends Vue implements Props {
 
   public get heightPerRow(): number {
     return (this.height - this.timeStamps.size.height) / (this.rowCount - 1);
-  }
-
-  private get svg(): Svg {
-    // console.log(this.timeStamps.size.height);
-    return {
-      width:
-        this.width +
-        this.padding.left +
-        this.padding.right +
-        this.timeStamps.size.width / 2,
-      height:
-        this.height +
-        this.padding.top +
-        this.padding.bottom +
-        this.timeStamps.size.height
-    };
   }
 
   private get renderTimestamps(): boolean {

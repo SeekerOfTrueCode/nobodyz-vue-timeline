@@ -4,7 +4,9 @@
       :start="{ hours: 8, minutes: 0 }"
       :end="{ hours: 22, minutes: 0 }"
       :show-timestapms="showTimestamps"
-      style="width: 100%; height: 500px; padding-left: 20px;"
+      padding-left="5%"
+      padding-right="5%"
+      style="width: 100%; height: 500px;"
     >
       <TimelineRow name="dupa">
         <template v-for="(rect, index) in rects">
