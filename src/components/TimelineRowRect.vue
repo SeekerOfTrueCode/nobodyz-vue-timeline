@@ -3,7 +3,7 @@
     :x="position.x"
     :y="position.y"
     :width="position.width"
-    :height="position.height"
+    :height="Math.abs(position.height)"
     stroke="none"
     stroke-width="0"
     fill="rgb(66, 133, 244, .8)"

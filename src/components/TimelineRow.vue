@@ -4,15 +4,15 @@
     <rect
       :x="padding.left"
       :y="y + padding.top"
-      :width="width"
-      :height="height"
+      :width="width + titleWidthNumber"
+      :height="Math.abs(height)"
       stroke="none"
       stroke-width="0"
       fill="#ffffff"
     />
     <!-- Horizontal Line -->
     <path
-      :d="horizontalPath(0, y + height, width)"
+      :d="horizontalPath(0, y + height, width + titleWidthNumber)"
       stroke="#b7b7b7"
       stroke-width="1"
       fill-opacity="1"
@@ -21,7 +21,7 @@
     <!-- Vertical Lines -->
     <template v-for="i in ticks">
       <path
-        :d="verticalPath((width / ticks) * i, y, height)"
+        :d="verticalPath(titleWidthNumber + (width / ticks) * (i-1), y, height)"
         :key="i"
         stroke-width="1"
         stroke="#e6e6e6"
@@ -29,7 +29,7 @@
         fill="none"
       />
     </template>
-    <foreignObject :x="padding.left" :y="padding.top + y" :width="widthPerTick" :height="height">
+    <foreignObject :x="padding.left" :y="padding.top + y" :width="titleWidthNumber" :height="Math.abs(height)">
       <div>
         <span>{{ name }}</span>
       </div>
@@ -67,6 +67,9 @@ export default class TimelineRow extends Vue {
   @InjectReactive("itemPadding")
   private itemPadding!: any;
 
+  @InjectReactive("titleWidthNumber")
+  private titleWidthNumber!: number;
+
   // private x: number = 0;
   private get y(): number {
     return this.height * this.rowIndex;
@@ -87,7 +90,7 @@ export default class TimelineRow extends Vue {
   }
 
   public calcChildPosition(start: Time, end: Time) {
-    const startOfTheX = this.padding.left + this.itemPadding.left;
+    const startOfTheX = this.padding.left + this.titleWidthNumber + this.itemPadding.left;
     const endOfTheX = this.itemPadding.left + this.itemPadding.right;
 
     const startOfTheY = this.padding.top + this.itemPadding.top + this.y;
@@ -111,9 +114,9 @@ export default class TimelineRow extends Vue {
     const endTick =
       (end.hours - start.hours + (end.minutes - start.minutes) / 60) /
       this.hoursPerTick;
-    const maxWidth = (this.ticks - startTick - 1) * this.widthPerTick - endOfTheX;
+    const maxWidth = (this.ticks - startTick) * this.widthPerTick - endOfTheX;
     const newPos = {
-      x: startOfTheX + (startTick + 1) * this.widthPerTick,
+      x: startOfTheX + (startTick) * this.widthPerTick,
       y: startOfTheY,
       width: clamp(endTick * this.widthPerTick - endOfTheX, 0, maxWidth),
       height: this.height - endOfTheY

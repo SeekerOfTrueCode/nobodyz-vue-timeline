@@ -4,6 +4,7 @@
       :start="{ hours: 8, minutes: 0 }"
       :end="{ hours: 22, minutes: 0 }"
       :show-timestapms="showTimestamps"
+      :title-width="100"
       padding-left="5%"
       padding-right="5%"
       style="width: 100%; height: 500px;"
@@ -49,9 +50,9 @@ export default class App extends Vue {
   private showTimestamps: boolean = true;
 
   private rects = [
-    [5, 12],
+    [6, 12],
     [13, 15],
-    [16, 24]
+    [16, 21]
   ];
 
   private onClick() {
