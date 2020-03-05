@@ -10,14 +10,10 @@
       style="width: 100%; height: 500px;"
     >
       <TimelineRow name="dupa">
-        <template v-for="(rect, index) in rects">
-          <TimelineRowRect
-            :key="`rect-${index}`"
-            :start="{ hours: rect[0], minutes: 0 }"
-            :end="{ hours: rect[1], minutes: 0 }"
+          <TimelineRowRects
+            :items="rects"
             @click="onClick"
           />
-        </template>
       </TimelineRow>
       <TimelineRow name="dupa2"></TimelineRow>
       <template v-for="(i) of (endHours - 10)">
@@ -36,13 +32,13 @@
 import { Component, Vue } from "vue-property-decorator";
 import Timeline from "./components/Timeline.vue";
 import TimelineRow from "./components/TimelineRow.vue";
-import TimelineRowRect from "./components/TimelineRowRect.vue";
+import TimelineRowRects from "./components/TimelineRowRects.vue";
 
 @Component({
   components: {
     Timeline,
     TimelineRow,
-    TimelineRowRect
+    TimelineRowRects
   }
 })
 export default class App extends Vue {
@@ -50,13 +46,43 @@ export default class App extends Vue {
   private showTimestamps: boolean = true;
 
   private rects = [
-    [6, 12],
-    [13, 15],
-    [16, 21]
+    {
+      start: {
+        hours: 6,
+        minutes: 0
+      },
+      end: {
+        hours: 12,
+        minutes: 0
+      },
+      data: "#1"
+    },
+    {
+      start: {
+        hours: 13,
+        minutes: 0
+      },
+      end: {
+        hours: 15,
+        minutes: 0
+      },
+      data: "#2"
+    },
+    {
+      start: {
+        hours: 16,
+        minutes: 0
+      },
+      end: {
+        hours: 21,
+        minutes: 0
+      },
+      data: "#3"
+    }
   ];
 
-  private onClick() {
-    console.log("hehe");
+  private onClick(item: any) {
+    console.log("click", item);
   }
 }
 </script>

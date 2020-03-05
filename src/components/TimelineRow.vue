@@ -29,7 +29,12 @@
         fill="none"
       />
     </template>
-    <foreignObject :x="padding.left" :y="padding.top + y" :width="titleWidthNumber" :height="Math.abs(height)">
+    <foreignObject
+      :x="padding.left"
+      :y="padding.top + y"
+      :width="titleWidthNumber"
+      :height="Math.abs(height)"
+    >
       <div>
         <span>{{ name }}</span>
       </div>
@@ -89,46 +94,49 @@ export default class TimelineRow extends Vue {
     this.rowIndex = this.$parent.$slots.default?.indexOf(this.$vnode) ?? 0;
   }
 
-  public calcChildPosition(start: Time, end: Time) {
-    const startOfTheX = this.padding.left + this.titleWidthNumber + this.itemPadding.left;
+  public get calcChildPosition(): any {
+    const startOfTheX =
+      this.padding.left + this.titleWidthNumber + this.itemPadding.left;
     const endOfTheX = this.itemPadding.left + this.itemPadding.right;
 
     const startOfTheY = this.padding.top + this.itemPadding.top + this.y;
     const endOfTheY = this.itemPadding.top + this.itemPadding.bottom;
 
-    // don't allow element to go outisde of the timeline time borders
-    if (this.rowStart.hours > start.hours) {
-      start.hours = this.rowStart.hours;
-      start.minutes = this.rowStart.minutes;
-    }
-    // if (this.rowEnd.hours < end.hours) {
-    //   end.hours = this.rowEnd.hours;
-    //   end.minutes = this.rowEnd.minutes;
-    // }
+    return (start: Time, end: Time): any => {
+      // don't allow element to go outisde of the timeline time borders
+      if (this.rowStart.hours > start.hours) {
+        start.hours = this.rowStart.hours;
+        start.minutes = this.rowStart.minutes;
+      }
+      // if (this.rowEnd.hours < end.hours) {
+      //   end.hours = this.rowEnd.hours;
+      //   end.minutes = this.rowEnd.minutes;
+      // }
 
-    const startTick =
-      (start.hours -
-        this.rowStart.hours +
-        (start.minutes - this.rowStart.minutes) / 60) /
-      this.hoursPerTick;
-    const endTick =
-      (end.hours - start.hours + (end.minutes - start.minutes) / 60) /
-      this.hoursPerTick;
-    const maxWidth = (this.ticks - startTick) * this.widthPerTick - endOfTheX;
-    const newPos = {
-      x: startOfTheX + (startTick) * this.widthPerTick,
-      y: startOfTheY,
-      width: clamp(endTick * this.widthPerTick - endOfTheX, 0, maxWidth),
-      height: this.height - endOfTheY
+      const startTick =
+        (start.hours -
+          this.rowStart.hours +
+          (start.minutes - this.rowStart.minutes) / 60) /
+        this.hoursPerTick;
+      const endTick =
+        (end.hours - start.hours + (end.minutes - start.minutes) / 60) /
+        this.hoursPerTick;
+      const maxWidth = (this.ticks - startTick) * this.widthPerTick - endOfTheX;
+      const newPos = {
+        x: startOfTheX + startTick * this.widthPerTick,
+        y: startOfTheY,
+        width: clamp(endTick * this.widthPerTick - endOfTheX, 0, maxWidth),
+        height: this.height - endOfTheY
+      };
+
+      // // dont't allow width to go outside of the timeline
+      // newPos.width = clamp(
+      //   newPos.width,
+      //   0,
+      //   this.padding.left - this.itemPadding.left + this.width - newPos.x
+      // );
+      return newPos;
     };
-
-    // // dont't allow width to go outside of the timeline
-    // newPos.width = clamp(
-    //   newPos.width,
-    //   0,
-    //   this.padding.left - this.itemPadding.left + this.width - newPos.x
-    // );
-    return newPos;
   }
 
   private verticalPath(x: number, y: number, height: number): string {
