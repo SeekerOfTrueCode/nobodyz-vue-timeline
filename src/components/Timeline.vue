@@ -48,10 +48,9 @@ import {
   Vue,
   Component,
   Prop,
-  ProvideReactive,
   Watch
 } from "vue-property-decorator";
-import { Time } from "@/components/Types";
+import { Time, Padding } from "@/components/Types";
 import TimelineTooltip from "@/components/TimelineTooltip.vue";
 
 import { Mutate } from "@/vuetify's-copied-code/MutateVNodeDirective";
@@ -63,13 +62,6 @@ interface Props {
   showTimestapms: boolean;
 }
 
-export type Padding = {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
-};
-
 interface Svg {
   width: number;
   height: number;
@@ -80,9 +72,9 @@ function adjustPadding(value: string | number, relativeLength: number): number {
     // is number
     return value as number;
   } else if (typeof value === "string" || (value as any) instanceof String) {
-    const [char, char2] = (value as string).substring(
+    const [char, char2] = ((value as string).substring(
       (value as string).length - 2
-    );
+    )) as any;
     if (char2 === "%") {
       return (+(value as string).slice(0, -1) / 100) * relativeLength;
     }
@@ -103,11 +95,9 @@ function adjustPadding(value: string | number, relativeLength: number): number {
   }
 })
 export default class Timeline extends Vue implements Props {
-  @ProvideReactive("start")
   @Prop({ required: true })
   public start!: Time;
 
-  @ProvideReactive("end")
   @Prop({ required: true })
   public end!: Time;
 
@@ -130,8 +120,8 @@ export default class Timeline extends Vue implements Props {
   public paddingBottom!: string | number;
 
   // TODO: add handling the procentege as text
-  @ProvideReactive("itemPadding")
-  public itemPadding = {
+  // @ProvideReactive("itemPadding")
+  public itemPadding: Padding = {
     top: 15,
     left: 5,
     right: 5,
@@ -156,11 +146,11 @@ export default class Timeline extends Vue implements Props {
   public height: number = 0;
   private rowCount: number = 0;
 
-  @ProvideReactive("titleWidthNumber")
-  private titleWidthNumber: number = 0;
+  // @ProvideReactive("titleWidthNumber")
+  public titleWidthNumber: number = 0;
 
-  @ProvideReactive("padding")
-  private padding: Padding = {
+  // @ProvideReactive("padding")
+  public padding: Padding = {
     top: 0,
     right: 0,
     bottom: 0,
@@ -302,7 +292,7 @@ export default class Timeline extends Vue implements Props {
       this.updateSize(this.$el.clientWidth, this.$el.clientHeight);
     }
     this.updateSvgSize();
-    console.log("observeUpdateTimestampsSize");
+    // console.log("observeUpdateTimestampsSize");
   }
 
   @Watch("showTimestapms")

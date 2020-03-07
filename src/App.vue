@@ -82,7 +82,7 @@ export default class App extends Vue {
   ];
 
   private onClick(item: any) {
-    console.log("click", item);
+    // console.log("click", item);
   }
 }
 </script>

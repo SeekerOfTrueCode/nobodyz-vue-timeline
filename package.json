@@ -2,21 +2,40 @@
   "name": "vue-nobodyz-timeline",
   "author": "seekeroftruecode",
   "version": "0.2.1",
+  "license": "MIT",
   "private": false,
-  "main": "./dist/vue-nobodyz-timeline.common.js",
+  "main": "./dist/lib/vue-nobodyz-timeline.common.js",
+  "unpkg": "./dist/wc/vue-nobodyz-timeline.min.js",
+  "typings": "types/index.d.ts",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-bundle": "vue-cli-service build --target lib --name vue-nobodyz-timeline ./src/index.ts",
+    "build-bundle:types": "tsc -p tsconfig.json",
+    "build-bundle:library": "vue-cli-service build --target lib --name vue-nobodyz-timeline ./src/index.ts --dest dist/lib",
+    "build-bundle:wc": "vue-cli-service build --target wc --name vue-nobodyz-timeline ./src/components/*.vue --dest dist/wc",
+    "build-bundle:all": "npm run build-bundle:library && npm run build-bundle:wc",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
   "files": [
     "dist/*",
     "src/*",
-    "public/*",
+    "types/*.d.ts",
     "*.json",
     "*.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeekerOfTrueCode/vue-nobodyz-timeline.git"
+  },
+  "keywords": [
+    "vue",
+    "vue2",
+    "vuejs",
+    "vuejs2",
+    "timeline",
+    "day timeline",
+    "nobodyz"
   ],
   "dependencies": {
     "core-js": "^3.6.4",
@@ -47,9 +66,5 @@
     "sass-loader": "^8.0.2",
     "typescript": "^3.7.5",
     "vue-template-compiler": "^2.6.11"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/SeekerOfTrueCode/vue-nobodyz-timeline"
   }
 }

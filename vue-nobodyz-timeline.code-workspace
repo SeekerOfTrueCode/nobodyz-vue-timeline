@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			// Source code
+			"name": "vue-nobodyz-timeline",
+			"path": "./"
+		  },
+		  {
+			// Docs and release notes
+			"name": "documentation",
+			"path": "./docs-src"
+		  },
+		  {
+			// Docs and release notes
+			"name": "documentation-dist",
+			"path": "./docs"
+		  },
+	],
+	"settings": {}
+}

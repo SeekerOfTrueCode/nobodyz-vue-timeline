@@ -44,8 +44,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, InjectReactive } from "vue-property-decorator";
-import { Time } from "./Types";
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { Time, Padding } from "./Types";
 import Timeline from "./Timeline.vue";
 
 /**
@@ -65,15 +65,6 @@ function clamp(value: number, min: number, max: number) {
 export default class TimelineRow extends Vue {
   @Prop({ default: "DefaultName", type: String })
   private name!: string;
-
-  @InjectReactive("padding")
-  private padding!: any;
-
-  @InjectReactive("itemPadding")
-  private itemPadding!: any;
-
-  @InjectReactive("titleWidthNumber")
-  private titleWidthNumber!: number;
 
   // private x: number = 0;
   private get y(): number {
@@ -153,9 +144,26 @@ export default class TimelineRow extends Vue {
     return (this.$parent as any).width;
   }
 
-  // private get padding(): any {
-  //   return (this.$parent as Timeline).padding;
-  // }
+  private get padding(): Padding {
+    return (this.$parent as Timeline).padding;
+  }
+
+  private get itemPadding(): Padding {
+    return (this.$parent as Timeline).itemPadding;
+  }
+
+  private get titleWidthNumber(): number {
+    return (this.$parent as Timeline).titleWidthNumber;
+  }
+
+  // @InjectReactive("padding")
+  // private padding!: any;
+
+  // @InjectReactive("itemPadding")
+  // private itemPadding!: any;
+
+  // @InjectReactive("titleWidthNumber")
+  // private titleWidthNumber!: number;
 
   private get ticks(): number {
     const ticks = (this.$parent as Timeline).ticks;

@@ -1,29 +1,35 @@
+<p align="center">
+    <a href="https://www.npmjs.com/package/vue-nobodyz-timeline">
+        <img src="https://img.shields.io/npm/v/vue-nobodyz-timeline.svg" alt="Version">
+    </a>
+
+    <a href="https://github.com/SeekerOfTrueCode/vue-nobodyz-timeline/blob/master/LICENSE">
+        <img src="https://img.shields.io/npm/l/vue-nobodyz-timeline.svg" alt="License">
+    </a>
+</p>
+
 # vue-nobodyz-timeline
 
-## Project setup
+## How to install:
+
+### CommonJS:
+```bash
+npm install --save axios vue-nobodyz-timeline
 ```
-npm install
+No entry filee installation needed.
+
+### Script:
+Just add 2 scripts in order: `vue`, `vue-nobodyz-timeline` to your `document`.
+
+## Usage:
+
+```js
+import { Timeline, TimelineRow, TimelineRowRects } from "vue-nobodyz-timeline";
+// TODO: Add examples and props doc
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### Documentation
 
-### Compiles and minifies for production
-```
-npm run build
-```
+To check out the [component api explorer](https://vuetifyjs.com/components/api-explorer) and docs.
 
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[Codesandbox demo](https://codesandbox.io/s/vue-nobodyz-timeline-demo-2z8n6)
