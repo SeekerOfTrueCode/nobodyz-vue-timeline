@@ -1,7 +1,7 @@
 {
   "name": "vue-nobodyz-timeline",
   "author": "seekeroftruecode",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
   "main": "./dist/vue-nobodyz-timeline.common.js",
   "scripts": {

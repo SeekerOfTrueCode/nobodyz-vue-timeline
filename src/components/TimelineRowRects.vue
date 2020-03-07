@@ -65,7 +65,7 @@ export default class TimelineRowRects extends Vue {
   @Watch("$parent.calcChildPosition")
   private async calculate() {
     await this.$nextTick();
-    console.log("called");
+    // console.log("called");
     this.rects = [];
     this.colidedItems = [];
     this.items.forEach(item => {
