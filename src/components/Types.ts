@@ -1,6 +1,6 @@
 export interface Period {
-    start: Date;
-    end: Date;
+    start: Time;
+    end: Time;
 }
 export interface Time {
     hours: number;
