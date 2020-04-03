@@ -1,0 +1,56 @@
+{
+  "name": "vue-nobodyz-timeline",
+  "author": "seekeroftruecode",
+  "version": "0.2.1",
+  "license": "MIT",
+  "private": false,
+  "main": "./dist/vue-nobodyz-timeline.common.js",
+  "unpkg": "./wc/vue-nobodyz-timeline.min.js",
+  "typings": "types/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build-bundle:types": "tsc --emitDeclarationOnly",
+    "build-bundle:library": "vue-cli-service build --target lib --name vue-nobodyz-timeline ./src/index.ts --dest ./dist",
+    "build-bundle:wc": "vue-cli-service build --target wc --name vue-nobodyz-timeline ./src/components/*.vue --dest ./wc",
+    "build-bundle:all": "yarn run build-bundle:library && yarn run build-bundle:wc && yarn run build-bundle:types",
+    "test:unit": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint"
+  },
+  "files": [
+    "dist/*",
+    "wc/*",
+    "src/*",
+    "types/*.d.ts",
+    "*.json",
+    "*.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeekerOfTrueCode/vue-nobodyz-timeline.git"
+  },
+  "keywords": [
+    "vue",
+    "vue2",
+    "vuejs",
+    "vuejs2",
+    "timeline",
+    "day timeline",
+    "nobodyz"
+  ],
+  "dependencies": {
+    "core-js": "^3.6.4",
+    "vue": "^2.6.11",
+    "vue-class-component": "^7.2.3",
+    "vue-property-decorator": "^8.4.0"
+  },
+  "devDependencies": {
+
+    "@vue/cli-plugin-babel": "~4.2.3",
+    "@vue/cli-plugin-eslint": "~4.2.3",
+    "@vue/cli-plugin-router": "~4.2.3",
+    "@vue/cli-plugin-typescript": "~4.2.3",
+    "@vue/cli-plugin-unit-jest": "~4.2.3",
+    "@vue/cli-plugin-vuex": "~4.2.3",
+    "@vue/cli-service": "~4.2.3"
+  }
+}
