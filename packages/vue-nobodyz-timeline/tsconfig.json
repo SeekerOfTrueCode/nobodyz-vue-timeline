@@ -18,11 +18,11 @@
       "webpack-env",
       "jest"
     ],
-    // "paths": {
-    //   "@/*": [
-    //     "src/*"
-    //   ]
-    // },
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
     "lib": [
       "esnext",
       "dom",

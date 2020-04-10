@@ -71,12 +71,12 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 
-import { Time, Padding } from "@nobodyz/vue-nobodyz-timeline/";
+import { Time, Padding } from "@/components/Types";
 // import { Time, Padding } from "../components/Types";
-import TimelineTooltip from "../components/TimelineTooltip.vue";
+import TimelineTooltip from "@/components/TimelineTooltip.vue";
 
-import { Mutate } from "../vuetify's-copied-code/MutateVNodeDirective";
-import { Resize } from "../vuetify's-copied-code/ResizeVNodeDirective";
+import { Mutate } from "@/vuetify's-copied-code/MutateVNodeDirective";
+import { Resize } from "@/vuetify's-copied-code/ResizeVNodeDirective";
 
 interface Props {
   start: Time;

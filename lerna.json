@@ -16,7 +16,16 @@
       "registry": "https://npm.pkg.github.com"
     },
     "bootstrap": {
-      "ignore": []
+      "ignore": [],
+      "nohoist": [
+        "@vue/cli-plugin-babel",
+        "@vue/cli-plugin-eslint",
+        "@vue/cli-plugin-router",
+        "@vue/cli-plugin-typescript",
+        "@vue/cli-plugin-unit-jest",
+        "@vue/cli-plugin-vuex",
+        "@vue/cli-service"
+      ]
     }
   }
 }

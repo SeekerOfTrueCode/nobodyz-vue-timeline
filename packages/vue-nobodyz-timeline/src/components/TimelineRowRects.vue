@@ -29,8 +29,8 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 // import TimelineRow from "./TimelineRow.vue";
-import { Time, Period, RectDimensions } from "./Types";
-import TimelineRow from "./TimelineRow.vue";
+import { Time, Period, RectDimensions } from "@/components/Types";
+import TimelineRow from "@/components/TimelineRow.vue";
 
 function dateRangeOverlaps(
   aStart: number,

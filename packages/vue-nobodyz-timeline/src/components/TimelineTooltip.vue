@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch, Ref } from "vue-property-decorator";
-import { Resize } from "../vuetify's-copied-code/ResizeVNodeDirective";
+import { Resize } from "@/vuetify's-copied-code/ResizeVNodeDirective";
 import { VNode } from "vue";
 
 export type Tooltip = {

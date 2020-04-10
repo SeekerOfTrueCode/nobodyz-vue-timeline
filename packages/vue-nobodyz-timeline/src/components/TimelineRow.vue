@@ -47,8 +47,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Time, Padding } from "./Types";
-import Timeline from "./Timeline.vue";
+import { Time, Padding } from "@/components/Types";
+import Timeline from "@/components/Timeline.vue";
 
 /**
  * Returns a number whose value is limited to the given range.

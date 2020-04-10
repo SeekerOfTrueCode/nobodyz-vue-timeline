@@ -7,6 +7,8 @@
   ],
   "devDependencies": {
     "@types/jest": "^25.1.4",
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@typescript-eslint/parser": "^2.24.0",
     "@vue/cli-plugin-babel": "~4.2.3",
     "@vue/cli-plugin-eslint": "~4.2.3",
     "@vue/cli-plugin-router": "~4.2.3",
@@ -14,8 +16,6 @@
     "@vue/cli-plugin-unit-jest": "~4.2.3",
     "@vue/cli-plugin-vuex": "~4.2.3",
     "@vue/cli-service": "~4.2.3",
-    "@typescript-eslint/eslint-plugin": "^2.24.0",
-    "@typescript-eslint/parser": "^2.24.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-standard": "^5.1.2",
     "@vue/eslint-config-typescript": "^5.0.2",

@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Timeline, TimelineRow, TimelineRowRects } from "../../../../packages/vue-nobodyz-timeline/src/index";
+import { Timeline, TimelineRow, TimelineRowRects } from "vue-nobodyz-timeline/src/index";
 // console.dir(TimelineRow);
 
 @Component({
