@@ -1,7 +1,7 @@
 {
   "name": "vue-nobodyz-timeline",
   "author": "seekeroftruecode",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "license": "MIT",
   "private": false,
   "main": "./dist/vue-nobodyz-timeline.common.js",
@@ -44,7 +44,6 @@
     "vue-property-decorator": "^8.4.0"
   },
   "devDependencies": {
-
     "@vue/cli-plugin-babel": "~4.2.3",
     "@vue/cli-plugin-eslint": "~4.2.3",
     "@vue/cli-plugin-router": "~4.2.3",
