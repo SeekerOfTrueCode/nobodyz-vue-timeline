@@ -1,20 +1,20 @@
 {
   "name": "@nobodyz/vue-timeline",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": false,
   "author": "seekeroftruecode",
   "scripts": {
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "build-bundle:all": "npm run build-bundle:library && npm run build-bundle:wc && npm run build-bundle:types",
-    "build-bundle:library": "vue-cli-service build --target lib --name vue-nobodyz-timeline ./src/index.ts --dest ./dist",
+    "build-bundle:library": "vue-cli-service build --target lib --name vue-timeline ./src/index.ts --dest ./dist",
     "build-bundle:types": "tsc --emitDeclarationOnly",
-    "build-bundle:wc": "vue-cli-service build --target wc --name vue-nobodyz-timeline ./src/components/*.vue --dest ./wc",
+    "build-bundle:wc": "vue-cli-service build --target wc --name vue-timeline ./src/components/*.vue --dest ./wc",
     "storybook:build": "vue-cli-service storybook:build -c config/storybook -o ./docs",
     "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook"
   },
-  "main": "./dist/vue-nobodyz-timeline.common.js",
-  "unpkg": "./wc/vue-nobodyz-timeline.min.js",
+  "main": "./dist/vue-timeline.common.js",
+  "unpkg": "./wc/vue-timeline.min.js",
   "files": [
     "dist/*",
     "wc/*",
@@ -75,5 +75,14 @@
     "url": "git+https://github.com/SeekerOfTrueCode/nobodyz-vue-timeline.git"
   },
   "sideEffects": false,
-  "typings": "types/src/index.d.ts"
+  "typings": "types/src/index.d.ts",
+  "description": "## Project setup ``` npm install @nobodyz/vue-timeline ``` ### Example useage ```javascript",
+  "bugs": {
+    "url": "https://github.com/SeekerOfTrueCode/nobodyz-vue-timeline/issues"
+  },
+  "homepage": "https://github.com/SeekerOfTrueCode/nobodyz-vue-timeline#readme",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  }
 }

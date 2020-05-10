@@ -4,6 +4,9 @@
 ```
 npm install @nobodyz/vue-timeline
 ```
+### Docs
+[vue-timeline docs](https://seekeroftruecode.github.io/nobodyz-vue-timeline "vue-timeline docs")
+
 ### Example useage
 ```javascript
 
