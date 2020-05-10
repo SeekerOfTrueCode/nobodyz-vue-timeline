@@ -1,49 +1,79 @@
 {
-  "name": "root",
-  "private": true,
-  "workspaces": [
-    "packages/*",
-    "src/*"
+  "name": "@nobodyz/vue-timeline",
+  "version": "0.1.0",
+  "private": false,
+  "author": "seekeroftruecode",
+  "scripts": {
+    "test:unit": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint",
+    "build-bundle:all": "npm run build-bundle:library && npm run build-bundle:wc && npm run build-bundle:types",
+    "build-bundle:library": "vue-cli-service build --target lib --name vue-nobodyz-timeline ./src/index.ts --dest ./dist",
+    "build-bundle:types": "tsc --emitDeclarationOnly",
+    "build-bundle:wc": "vue-cli-service build --target wc --name vue-nobodyz-timeline ./src/components/*.vue --dest ./wc",
+    "storybook:build": "vue-cli-service storybook:build -c config/storybook -o ./docs",
+    "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook"
+  },
+  "main": "./dist/vue-nobodyz-timeline.common.js",
+  "unpkg": "./wc/vue-nobodyz-timeline.min.js",
+  "files": [
+    "dist/*",
+    "wc/*",
+    "src/*",
+    "types/*.d.ts",
+    "*.json",
+    "*.js"
   ],
-  "devDependencies": {
-    "@types/jest": "^25.1.4",
-    "@typescript-eslint/eslint-plugin": "^2.24.0",
-    "@typescript-eslint/parser": "^2.24.0",
-    "@vue/cli-plugin-babel": "~4.2.3",
-    "@vue/cli-plugin-eslint": "~4.2.3",
-    "@vue/cli-plugin-router": "~4.2.3",
-    "@vue/cli-plugin-typescript": "~4.2.3",
-    "@vue/cli-plugin-unit-jest": "~4.2.3",
-    "@vue/cli-plugin-vuex": "~4.2.3",
-    "@vue/cli-service": "~4.2.3",
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "@vue/eslint-config-standard": "^5.1.2",
-    "@vue/eslint-config-typescript": "^5.0.2",
-    "@vue/test-utils": "1.0.0-beta.32",
-    "eslint": "^6.8.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-vue": "^6.2.2",
-    "lerna": "^3.20.2",
-    "node-sass": "^4.13.1",
-    "prettier": "^2.0.1",
+  "dependencies": {
+    "core-js": "^3.6.4",
     "resize-observer-polyfill": "^1.5.1",
+    "vue": "^2.6.11",
+    "vue-class-component": "^7.2.3",
+    "vue-property-decorator": "^8.4.1"
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": ">=5.3.0",
+    "@storybook/addon-docs": ">=5.3.0",
+    "@storybook/addon-knobs": ">=5.3.0",
+    "@storybook/addon-links": ">=5.3.0",
+    "@storybook/addon-notes": ">=5.3.0",
+    "@storybook/vue": ">=5.3.0",
+    "@types/jest": "^24.0.19",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
+    "@vue/cli-plugin-babel": "~4.3.0",
+    "@vue/cli-plugin-eslint": "~4.3.0",
+    "@vue/cli-plugin-router": "~4.3.0",
+    "@vue/cli-plugin-typescript": "~4.3.0",
+    "@vue/cli-plugin-unit-jest": "~4.3.0",
+    "@vue/cli-plugin-vuex": "~4.3.0",
+    "@vue/cli-service": "~4.3.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/eslint-config-typescript": "^5.0.2",
+    "@vue/test-utils": "1.0.0-beta.31",
+    "eslint": "^6.7.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-vue": "^6.2.2",
+    "node-sass": "^4.12.0",
+    "prettier": "^1.19.1",
     "sass-loader": "^8.0.2",
-    "typescript": "^3.8.3",
+    "typescript": "~3.8.3",
+    "vue-cli-plugin-storybook": "~1.2.2",
     "vue-template-compiler": "^2.6.11"
   },
-  "scripts": {
-    "lerna-bootstrap": "lerna bootstrap",
-    "lerna-link": "lerna link",
-    "lerna-clean": "lerna clean",
-    "build-vue-nobodyz-timeline": "lerna run --scope=vue-nobodyz-timeline build-bundle:all",
-    "serve": "lerna run --scope=docs serve"
+  "keywords": [
+    "vue",
+    "vue2",
+    "vuejs",
+    "vuejs2",
+    "timeline",
+    "day timeline",
+    "nobodyz"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeekerOfTrueCode/nobodyz-vue-timeline.git"
   },
-  "dependencies": {
-    "docs": "file:src\\docs",
-    "vue-nobodyz-timeline": "file:packages\\vue-nobodyz-timeline"
-  }
+  "sideEffects": false,
+  "typings": "types/src/index.d.ts"
 }
