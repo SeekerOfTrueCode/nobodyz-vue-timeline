@@ -2,12 +2,10 @@ import ResizeObserver from "resize-observer-polyfill";
 import { VNodeDirective } from "vue";
 
 interface HTMLElementResize extends HTMLElement {
-    _resize: { observer: ResizeObserver };
+  _resize: { observer: ResizeObserver };
 }
 
-interface ResizeVNodeDirective extends VNodeDirective {
-
-}
+type ResizeVNodeDirective = VNodeDirective;
 
 function inserted(el: HTMLElement, binding: ResizeVNodeDirective) {
   const modifiers = binding.modifiers || /* istanbul ignore next */ {};
@@ -29,18 +27,18 @@ function inserted(el: HTMLElement, binding: ResizeVNodeDirective) {
 
   //   };
 
-  const observer = new ResizeObserver((
-    mutationsList: ResizeObserverEntry[],
-    observer: ResizeObserver
-  ) => {
-    /* istanbul ignore if */
-    if (!(el as HTMLElementResize)._resize) return; // Just in case, should never fire
+  const observer = new ResizeObserver(
+    (mutationsList: ResizeObserverEntry[], observer: ResizeObserver) => {
+      /* istanbul ignore if */
+      if (!(el as HTMLElementResize)._resize) return; // Just in case, should never fire
 
-    callback(mutationsList, observer);
+      callback(mutationsList, observer);
 
-    // If has the once modifier, unbind
-    once && unbind(el as HTMLElementResize);
-  });
+      // If has the once modifier, unbind
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      once && unbind(el as HTMLElementResize);
+    }
+  );
 
   observer.observe(el);
   (el as HTMLElementResize)._resize = { observer };

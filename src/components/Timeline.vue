@@ -1,6 +1,11 @@
 <template>
   <div v-resize.immediate="observeUpdateSize" style="position: relative;">
-    <svg :width="svg.width" :height="svg.height" style="background: rgba(0,0,0,.1);" tabindex="-1">
+    <svg
+      :width="svg.width"
+      :height="svg.height"
+      :style="{ background: background }"
+      tabindex="-1"
+    >
       <g v-if="width != 0 && height != 0">
         <g v-mutate.immediate.child="observeUpdateRowCount" type="rows">
           <slot />
@@ -22,17 +27,42 @@
           <text
             v-resize.immediate="observeUpdateTimestampsSize"
             :key="`hours-${time[0]}`"
-            :x="Math.round(padding.left + titleWidthNumber - timeStamps.size.width/2)"
+            :x="
+              Math.round(
+                padding.left + titleWidthNumber - timeStamps.size.width / 2
+              )
+            "
             :y="padding.top + height"
             class="small"
-          >{{time[0].toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false })}}</text>
-          <template v-for="(date,i) in time.slice(1)">
+          >
+            {{
+              time[0].toLocaleString("en-US", {
+                hour: "numeric",
+                minute: "numeric",
+                hour12: false
+              })
+            }}
+          </text>
+          <template v-for="(date, i) in time.slice(1)">
             <text
               :key="`hours-${date}`"
-              :x="padding.left + titleWidthNumber + (widthPerTick * (i + 1)) - timeStamps.size.width/2"
+              :x="
+                padding.left +
+                  titleWidthNumber +
+                  widthPerTick * (i + 1) -
+                  timeStamps.size.width / 2
+              "
               :y="padding.top + height"
               class="small"
-            >{{date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false })}}</text>
+            >
+              {{
+                date.toLocaleString("en-US", {
+                  hour: "numeric",
+                  minute: "numeric",
+                  hour12: false
+                })
+              }}
+            </text>
           </template>
         </g>
       </g>
@@ -44,14 +74,10 @@
 </template>
 
 <script lang="ts">
-import {
-  Vue,
-  Component,
-  Prop,
-  ProvideReactive,
-  Watch
-} from "vue-property-decorator";
-import { Time } from "@/components/Types";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+
+import { Time, Padding } from "@/components/Types";
+// import { Time, Padding } from "../components/Types";
 import TimelineTooltip from "@/components/TimelineTooltip.vue";
 
 import { Mutate } from "@/vuetify's-copied-code/MutateVNodeDirective";
@@ -62,13 +88,6 @@ interface Props {
   end: Time;
   showTimestapms: boolean;
 }
-
-export type Padding = {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
-};
 
 interface Svg {
   width: number;
@@ -82,7 +101,7 @@ function adjustPadding(value: string | number, relativeLength: number): number {
   } else if (typeof value === "string" || (value as any) instanceof String) {
     const [char, char2] = (value as string).substring(
       (value as string).length - 2
-    );
+    ) as any;
     if (char2 === "%") {
       return (+(value as string).slice(0, -1) / 100) * relativeLength;
     }
@@ -92,6 +111,7 @@ function adjustPadding(value: string | number, relativeLength: number): number {
   }
   return 0;
 }
+// const dupa = Symbol("dupa");
 
 @Component({
   components: {
@@ -103,11 +123,9 @@ function adjustPadding(value: string | number, relativeLength: number): number {
   }
 })
 export default class Timeline extends Vue implements Props {
-  @ProvideReactive("start")
   @Prop({ required: true })
   public start!: Time;
 
-  @ProvideReactive("end")
   @Prop({ required: true })
   public end!: Time;
 
@@ -129,9 +147,12 @@ export default class Timeline extends Vue implements Props {
   @Prop({ default: 0, type: [Number, String] })
   public paddingBottom!: string | number;
 
+  @Prop({ default: "", type: String })
+  public background!: string;
+
   // TODO: add handling the procentege as text
-  @ProvideReactive("itemPadding")
-  public itemPadding = {
+  // @ProvideReactive("itemPadding")
+  public itemPadding: Padding = {
     top: 15,
     left: 5,
     right: 5,
@@ -150,17 +171,17 @@ export default class Timeline extends Vue implements Props {
     height: 0
   };
 
-  private timelineRowRectListeners = {};
+  public timelineRowRectListeners = {};
 
-  public width: number = 0;
-  public height: number = 0;
-  private rowCount: number = 0;
+  public width = 0;
+  public height = 0;
+  private rowCount = 0;
 
-  @ProvideReactive("titleWidthNumber")
-  private titleWidthNumber: number = 0;
+  // @ProvideReactive("titleWidthNumber")
+  public titleWidthNumber = 0;
 
-  @ProvideReactive("padding")
-  private padding: Padding = {
+  // @ProvideReactive("padding")
+  public padding: Padding = {
     top: 0,
     right: 0,
     bottom: 0,
@@ -302,7 +323,7 @@ export default class Timeline extends Vue implements Props {
       this.updateSize(this.$el.clientWidth, this.$el.clientHeight);
     }
     this.updateSvgSize();
-    console.log("observeUpdateTimestampsSize");
+    // console.log("observeUpdateTimestampsSize");
   }
 
   @Watch("showTimestapms")
@@ -382,5 +403,4 @@ export default class Timeline extends Vue implements Props {
 }
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

@@ -5,11 +5,14 @@ module.exports = {
   },
   extends: [
     "plugin:vue/essential",
-    "@vue/standard",
-    "@vue/typescript"
+    "eslint:recommended",
+    "@vue/typescript/recommended",
+    "@vue/prettier",
+    "@vue/prettier/@typescript-eslint"
   ],
   rules: {
-    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+    // "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-console": "off", // temp for debugging in docs
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
     quotes: ["error", "double", { allowTemplateLiterals: true }],
     semi: ["error", "always"],
@@ -17,10 +20,12 @@ module.exports = {
     "no-undef": "warn",
     "no-unused-vars": "warn",
     "no-unused-expressions": 0,
-    "comma-dangle": ["error", "never"]
+    "comma-dangle": ["error", "never"],
+    "operator-linebreak": "off"
   },
   parserOptions: {
-    parser: "@typescript-eslint/parser"
+    parser: "@typescript-eslint/parser",
+    ecmaVersion: 2020
   },
   overrides: [
     {

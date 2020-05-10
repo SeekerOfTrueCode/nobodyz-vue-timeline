@@ -1,6 +1,6 @@
 <template>
   <g>
-    <template v-for="({key: item, value: pos}, index) in rects">
+    <template v-for="({ key: item, value: pos }, index) in rects">
       <rect
         :key="`rect-${index}`"
         :x="pos.x"
@@ -9,7 +9,11 @@
         :height="Math.abs(pos.height)"
         stroke="none"
         stroke-width="0"
-        :fill="!colidedItems.includes(item) ? 'rgb(66, 133, 244, .8)':'rgb(255, 0, 0, .8)'"
+        :fill="
+          !colidedItems.includes(item)
+            ? 'rgb(66, 133, 244, .8)'
+            : 'rgb(255, 0, 0, .8)'
+        "
         v-on="on"
         @click="click(item)"
       />
@@ -23,16 +27,10 @@
 </template>
 
 <script lang="ts">
-import {
-  Component,
-  Prop,
-  Vue,
-  InjectReactive,
-  Emit,
-  Watch
-} from "vue-property-decorator";
-import { Time, Period } from "./Types";
-import TimelineRow from "./TimelineRow.vue";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+// import TimelineRow from "./TimelineRow.vue";
+import { Time, Period, RectDimensions } from "@/components/Types";
+import TimelineRow from "@/components/TimelineRow.vue";
 
 function dateRangeOverlaps(
   aStart: number,
@@ -46,15 +44,10 @@ function dateRangeOverlaps(
   return false;
 }
 
-interface RectDimensions {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
-@Component
+@Component<TimelineRowRects>({})
 export default class TimelineRowRects extends Vue {
+  public $parent!: TimelineRow;
+
   @Prop({ required: true })
   private items!: Period[];
 
@@ -72,10 +65,7 @@ export default class TimelineRowRects extends Vue {
       // calculate rect positions
       this.rects.push({
         key: item,
-        value: (this.$parent as TimelineRow).calcChildPosition(
-          item.start,
-          item.end
-        )
+        value: this.$parent.calcChildPosition(item.start, item.end)
       });
       // calculate collisions
       if (
@@ -119,7 +109,7 @@ export default class TimelineRowRects extends Vue {
 
   private get on() {
     return {
-      ...(this.$parent as any).$parent.timelineRowRectListeners
+      ...this.$parent.$parent.timelineRowRectListeners
     };
   }
 

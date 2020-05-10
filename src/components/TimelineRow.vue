@@ -21,7 +21,9 @@
     <!-- Vertical Lines -->
     <template v-for="i in ticks">
       <path
-        :d="verticalPath(titleWidthNumber + (width / ticks) * (i-1), y, height)"
+        :d="
+          verticalPath(titleWidthNumber + (width / ticks) * (i - 1), y, height)
+        "
         :key="i"
         stroke-width="1"
         stroke="#e6e6e6"
@@ -39,14 +41,14 @@
         <span>{{ name }}</span>
       </div>
     </foreignObject>
-    <slot />
+    <slot></slot>
   </g>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, InjectReactive } from "vue-property-decorator";
-import { Time } from "./Types";
-import Timeline from "./Timeline.vue";
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { Time, Padding } from "@/components/Types";
+import Timeline from "@/components/Timeline.vue";
 
 /**
  * Returns a number whose value is limited to the given range.
@@ -61,29 +63,24 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
-@Component
+@Component<TimelineRow>({})
 export default class TimelineRow extends Vue {
+  public $parent!: Timeline;
+
   @Prop({ default: "DefaultName", type: String })
   private name!: string;
-
-  @InjectReactive("padding")
-  private padding!: any;
-
-  @InjectReactive("itemPadding")
-  private itemPadding!: any;
-
-  @InjectReactive("titleWidthNumber")
-  private titleWidthNumber!: number;
 
   // private x: number = 0;
   private get y(): number {
     return this.height * this.rowIndex;
   }
 
-  private rowIndex: number = 0;
+  private rowIndex = 0;
 
-  private mounted() {
+  private async mounted() {
+    await this.$nextTick();
     this.updateIndex();
+    console.log("[Parent]", this.$parent);
   }
 
   private updated() {
@@ -91,7 +88,13 @@ export default class TimelineRow extends Vue {
   }
 
   private updateIndex(): void {
-    this.rowIndex = this.$parent.$slots.default?.indexOf(this.$vnode) ?? 0;
+    console.log("[TimelineRow] updateIndex", this);
+    const parentsChildren = this.$parent?.$children.filter(
+      x => x instanceof TimelineRow
+    );
+    this.rowIndex = parentsChildren.indexOf(this);
+    // const slotsArray = this.$parent?.$slots?.default ?? (this.$parent?.$scopedSlots as any)().default;
+    // this.rowIndex = slotsArray.indexOf(this.$vnode) ?? 0;
   }
 
   public get calcChildPosition(): any {
@@ -150,36 +153,53 @@ export default class TimelineRow extends Vue {
   }
 
   private get width(): number {
-    return (this.$parent as any).width;
+    return this.$parent.width;
   }
 
-  // private get padding(): any {
-  //   return (this.$parent as Timeline).padding;
-  // }
+  private get padding(): Padding {
+    return this.$parent.padding;
+  }
+
+  private get itemPadding(): Padding {
+    return this.$parent.itemPadding;
+  }
+
+  private get titleWidthNumber(): number {
+    return this.$parent.titleWidthNumber;
+  }
+
+  // @InjectReactive("padding")
+  // private padding!: any;
+
+  // @InjectReactive("itemPadding")
+  // private itemPadding!: any;
+
+  // @InjectReactive("titleWidthNumber")
+  // private titleWidthNumber!: number;
 
   private get ticks(): number {
-    const ticks = (this.$parent as Timeline).ticks;
+    const ticks = this.$parent.ticks;
     return ticks != null ? ticks : 1;
   }
 
   private get hoursPerTick(): number {
-    return (this.$parent as Timeline).hoursPerTick;
+    return this.$parent.hoursPerTick;
   }
 
   private get widthPerTick(): number {
-    return (this.$parent as Timeline).widthPerTick;
+    return this.$parent.widthPerTick;
   }
 
   private get height(): number {
-    return (this.$parent as Timeline).heightPerRow;
+    return this.$parent.heightPerRow;
   }
 
   private get rowStart(): Time {
-    return (this.$parent as Timeline).start;
+    return this.$parent.start;
   }
 
   private get rowEnd(): Time {
-    return (this.$parent as Timeline).end;
+    return this.$parent.end;
   }
 }
 </script>
