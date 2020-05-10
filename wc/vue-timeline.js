@@ -4418,19 +4418,19 @@ var TimelineTooltipshadow_component = normalizeComponent(
 
 
 
-window.customElements.define('vue-nobodyz-timeline-my-button', vue_wc_wrapper(external_Vue_default.a, MyButtonshadow))
+window.customElements.define('vue-timeline-my-button', vue_wc_wrapper(external_Vue_default.a, MyButtonshadow))
 
 
-window.customElements.define('vue-nobodyz-timeline-timeline', vue_wc_wrapper(external_Vue_default.a, Timelineshadow))
+window.customElements.define('vue-timeline-timeline', vue_wc_wrapper(external_Vue_default.a, Timelineshadow))
 
 
-window.customElements.define('vue-nobodyz-timeline-timeline-row', vue_wc_wrapper(external_Vue_default.a, TimelineRowshadow))
+window.customElements.define('vue-timeline-timeline-row', vue_wc_wrapper(external_Vue_default.a, TimelineRowshadow))
 
 
-window.customElements.define('vue-nobodyz-timeline-timeline-row-rects', vue_wc_wrapper(external_Vue_default.a, TimelineRowRectsshadow))
+window.customElements.define('vue-timeline-timeline-row-rects', vue_wc_wrapper(external_Vue_default.a, TimelineRowRectsshadow))
 
 
-window.customElements.define('vue-nobodyz-timeline-timeline-tooltip', vue_wc_wrapper(external_Vue_default.a, TimelineTooltipshadow))
+window.customElements.define('vue-timeline-timeline-tooltip', vue_wc_wrapper(external_Vue_default.a, TimelineTooltipshadow))
 
 /***/ }),
 
@@ -9116,4 +9116,4 @@ module.exports = global.Promise;
 /***/ })
 
 /******/ });
-//# sourceMappingURL=vue-nobodyz-timeline.js.map
+//# sourceMappingURL=vue-timeline.js.map
